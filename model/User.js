@@ -20,12 +20,13 @@ const UserSchema = new mongoose.Schema(
     },
     role: {
       type: [String],
-      default: ["subscriber"],
-      enum: ["subscriber", "instructor", "admin"],
+      enum: ["user", "admin"],
+      default: "user",
     },
-    stripe_account_id: "",
-    stripe_seller: {},
-    stripeSession: {},
+    isActivated: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
