@@ -4,8 +4,8 @@ const bcrypt = require("bcryptjs");
 const {
   generateToken,
   generateVerificationToken,
-} = require("./../utils/generate-token");
-const { sendVerificationToken } = require("./../utils/email");
+} = require("./../helper/generateToken");
+const { sendVerificationToken } = require("./../helper/mail");
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
