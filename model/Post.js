@@ -28,6 +28,11 @@ const PostSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "User",
     },
+
+    private: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
