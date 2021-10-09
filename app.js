@@ -1,6 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const passport = require("./security/passport");
+
+passport(require("passport"));
 
 // routes
 const AuthRoute = require("./routes/auth");

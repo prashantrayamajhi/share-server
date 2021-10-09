@@ -47,6 +47,6 @@ PostSchema.pre("validate", function (next) {
   next();
 });
 
-const Post = mongoose.model("Token", PostSchema);
+const Post = mongoose.model("Post", PostSchema);
 
 module.exports = Post;
