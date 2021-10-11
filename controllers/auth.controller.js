@@ -67,8 +67,6 @@ exports.signup = async (req, res) => {
     if (emailExists && emailExists.isActivated) {
       return res.status(409).send({ err: "Email already registered" });
     }
-    // const usernameExists = await User.findOne({ username });
-    // if (usernameExists) return res.status(409).send({ err: "Username taken" });
     const user = new User({ email, name, password, address });
     const token = generateVerificationToken(4);
     await sendVerificationToken({
@@ -79,6 +77,7 @@ exports.signup = async (req, res) => {
     const savedToken = new Token({ user: user._id, token });
     await savedToken.save();
     const data = await user.save();
+    data.password = undefined;
     return res.status(201).json({ data });
   } catch (err) {
     console.log(err);
