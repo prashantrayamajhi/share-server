@@ -64,7 +64,7 @@ exports.signup = async (req, res) => {
       }
       await User.findByIdAndDelete(emailExists._id);
     }
-    if (emailExists && emailExists.isActivated) {
+    if (emailExists) {
       return res.status(409).send({ err: "Email already registered" });
     }
     const user = new User({ email, name, password, address });
