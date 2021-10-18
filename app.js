@@ -25,7 +25,7 @@ app.use("/api/v1/auth", AuthRoute);
 app.use("/api/v1/posts", PostRoute);
 
 // user routes
-app.use("/api/v1/user/post", UserPostRoute);
+app.use("/api/v1/user/posts", UserPostRoute);
 app.use("/api/v1/user/profile", UserProfileRoute);
 
 module.exports = app;
