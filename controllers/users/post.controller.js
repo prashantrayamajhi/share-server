@@ -13,9 +13,12 @@ exports.getPosts = async (req, res) => {
 };
 
 exports.createPost = async (req, res) => {
-  let { title, content, img, private } = req.body;
+  let { title, content, img, private, description } = req.body;
   if (!title || title.trim().length <= 0) {
     return res.status(400).send({ err: "Title cannot be empty" });
+  }
+  if (!description || description.trim().length <= 0) {
+    return res.status(400).send({ err: "Description cannot be empty" });
   }
   if (!content || content.trim().length <= 0) {
     return res.status(400).send({ err: "Content cannot be empty" });
@@ -29,6 +32,7 @@ exports.createPost = async (req, res) => {
       title,
       content,
       img,
+      description,
       private,
       user: req.user._id,
     });

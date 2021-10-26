@@ -18,6 +18,12 @@ const PostSchema = new mongoose.Schema(
       trim: true,
     },
 
+    description: {
+      type: String,
+      allowNull: false,
+      trim: true,
+    },
+
     img: {
       type: String,
       allowNull: false,
