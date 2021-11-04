@@ -43,3 +43,39 @@ exports.createPost = async (req, res) => {
     return res.status(500).send({ err });
   }
 };
+
+exports.updatePost = async (req, res) => {
+  const { id } = req.params;
+  let { title, content, img, private, description } = req.body;
+  try {
+    const post = await Post.findById(id);
+    if (post.user.toString() !== req.user._id.toString())
+      return res.status(401).send({ err: "Unauthorized" });
+    if (!post) return res.status(404).send({ err: "Post not found" });
+    if (title) post.title = title;
+    if (content) post.content = content;
+    if (img) post.img = img;
+    if (private) post.private = private;
+    if (description) post.description = description;
+    const data = await post.save();
+    return res.status(200).json({ data });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ err });
+  }
+};
+
+exports.deletePost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await Post.findById(id);
+    if (post.user.toString() !== req.user._id.toString())
+      return res.status(401).send({ err: "Unauthorized" });
+    if (!post) return res.status(404).send({ err: "Post not found" });
+    const data = await post.remove();
+    return res.status(200).json({ data });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ err });
+  }
+};

@@ -14,4 +14,16 @@ router.post(
   controller.createPost
 );
 
+router.patch(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  controller.updatePost
+);
+
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  controller.deletePost
+);
+
 module.exports = router;
