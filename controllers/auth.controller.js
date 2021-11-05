@@ -25,6 +25,7 @@ exports.login = async (req, res) => {
       id: user._id,
       email: user.email,
       name: user.name,
+      userType: user.userType,
     };
     return res.status(200).json({ data });
   } catch (err) {
@@ -35,7 +36,8 @@ exports.login = async (req, res) => {
 
 exports.signup = async (req, res) => {
   try {
-    const { email, name, address, password, confirmPassword } = req.body;
+    const { email, name, address, password, confirmPassword, userType } =
+      req.body;
 
     if (!email) {
       return res.status(400).send({ err: "Email cannot be empty" });
@@ -52,6 +54,9 @@ exports.signup = async (req, res) => {
     if (password !== confirmPassword) {
       return res.status(400).send({ err: "Passwords don't match" });
     }
+    if (!userType.trim()) {
+      return res.status(400).send({ err: "Select a user type" });
+    }
     const emailExists = await User.findOne({ email });
     if (emailExists && !emailExists.isActivated) {
       const token = await Token.findOne({
@@ -67,7 +72,7 @@ exports.signup = async (req, res) => {
     if (emailExists && emailExists.isActivated) {
       return res.status(409).send({ err: "Email already registered" });
     }
-    const user = new User({ email, name, password, address });
+    const user = new User({ email, name, password, address, userType });
     const token = generateVerificationToken(4);
     await sendVerificationToken({
       to: user.email,
