@@ -1,4 +1,5 @@
 const Post = require("./../model/Post");
+const { cloudinaryConfig } = require("./../helper/cloudinary");
 
 // get all the posts
 exports.getAllPosts = async (req, res) => {
@@ -40,6 +41,7 @@ exports.getPostById = async (req, res) => {
 };
 
 exports.createPost = async (req, res) => {
+  cloudinaryConfig();
   let { title, content, img, private, description } = req.body;
   if (!title || title.trim().length <= 0) {
     return res.status(400).send({ err: "Title cannot be empty" });
@@ -72,6 +74,7 @@ exports.createPost = async (req, res) => {
 };
 
 exports.updatePost = async (req, res) => {
+  cloudinaryConfig();
   const { id } = req.params;
   let { title, content, img, private, description } = req.body;
   try {
