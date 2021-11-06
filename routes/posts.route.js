@@ -2,6 +2,7 @@ const router = require("express").Router();
 const passport = require("passport");
 const controller = require("./../controllers/posts.controller");
 const { isInvestor } = require("./../middleware/role");
+const upload = require("./../middleware/multer");
 
 router.get("/", controller.getPosts);
 
@@ -19,12 +20,14 @@ router.get(
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
   controller.createPost
 );
 
 router.patch(
   "/",
   passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
   controller.updatePost
 );
 
