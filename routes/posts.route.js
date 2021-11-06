@@ -20,14 +20,14 @@ router.get(
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  upload.single("image"),
+  upload.array("image"),
   controller.createPost
 );
 
 router.patch(
   "/",
   passport.authenticate("jwt", { session: false }),
-  upload.single("image"),
+  upload.array("image"),
   controller.updatePost
 );
 
