@@ -20,7 +20,7 @@ router.get(
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  upload.array("image"),
+  upload.array("images"),
   controller.createPost
 );
 
