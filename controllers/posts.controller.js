@@ -43,7 +43,7 @@ exports.getPostById = async (req, res) => {
 };
 
 exports.createPost = async (req, res) => {
-  cloudinaryConfig();
+  // cloudinaryConfig();
   let { title, content, private, description } = req.body;
   if (!title || title.trim().length <= 0) {
     return res.status(400).send({ err: "Title cannot be empty" });

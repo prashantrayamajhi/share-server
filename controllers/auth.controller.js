@@ -54,9 +54,9 @@ exports.signup = async (req, res) => {
     if (password !== confirmPassword) {
       return res.status(400).send({ err: "Passwords don't match" });
     }
-    if (!userType.trim()) {
-      return res.status(400).send({ err: "Select a user type" });
-    }
+    // if (!userType.trim()) {
+    //   return res.status(400).send({ err: "Select a user type" });
+    // }
     const emailExists = await User.findOne({ email });
     if (emailExists && !emailExists.isActivated) {
       const token = await Token.findOne({
@@ -72,7 +72,7 @@ exports.signup = async (req, res) => {
     if (emailExists && emailExists.isActivated) {
       return res.status(409).send({ err: "Email already registered" });
     }
-    const user = new User({ email, name, password, address, userType });
+    const user = new User({ email, name, password, address });
     const token = generateVerificationToken(4);
     await sendVerificationToken({
       to: user.email,
