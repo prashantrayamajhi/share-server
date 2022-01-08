@@ -32,6 +32,32 @@ const UserSchema = new mongoose.Schema(
       enum: ["investor", "startup"],
       default: "startup",
     },
+
+    organizationName: {
+      type: String,
+      trim: true,
+    },
+
+    websiteLink: {
+      type: String,
+      trim: true,
+    },
+
+    companySector: {
+      type: String,
+      trim: true,
+    },
+
+    pan: {
+      type: String,
+      trim: true,
+    },
+
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+
     isActivated: {
       type: Boolean,
       default: false,
