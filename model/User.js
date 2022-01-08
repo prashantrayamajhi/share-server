@@ -8,25 +8,30 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
     email: {
       type: String,
       required: true,
       trim: true,
       unique: true,
     },
+
     password: {
       type: String,
       required: true,
     },
+
     address: {
       type: String,
       required: true,
     },
+
     role: {
       type: String,
       enum: ["user", "admin", "moderator"],
       default: "user",
     },
+
     userType: {
       type: String,
       enum: ["investor", "startup"],
@@ -38,7 +43,7 @@ const UserSchema = new mongoose.Schema(
       trim: true,
     },
 
-    websiteLink: {
+    website: {
       type: String,
       trim: true,
     },

@@ -36,8 +36,18 @@ exports.login = async (req, res) => {
 
 exports.signup = async (req, res) => {
   try {
-    const { email, name, address, password, confirmPassword, userType } =
-      req.body;
+    const {
+      email,
+      name,
+      address,
+      password,
+      confirmPassword,
+      userType,
+      organizationName,
+      website,
+      companySetor,
+      pan,
+    } = req.body;
 
     if (!email) {
       return res.status(400).send({ err: "Email cannot be empty" });
@@ -72,7 +82,17 @@ exports.signup = async (req, res) => {
     if (emailExists && emailExists.isActivated) {
       return res.status(409).send({ err: "Email already registered" });
     }
-    const user = new User({ email, name, password, address });
+    const user = new User({
+      email,
+      name,
+      password,
+      address,
+      userType,
+      organizationName,
+      website,
+      companySetor,
+      pan,
+    });
     const token = generateVerificationToken(4);
     await sendVerificationToken({
       to: user.email,
