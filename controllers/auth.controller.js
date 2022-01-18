@@ -9,6 +9,7 @@ const { sendVerificationToken } = require("./../helper/mail");
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body);
   try {
     const user = await User.findOne({ $or: [{ email }, { username: email }] });
     if (!user) return res.status(401).send({ err: "Invalid credentials" });
