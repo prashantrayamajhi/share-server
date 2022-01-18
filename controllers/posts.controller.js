@@ -112,7 +112,7 @@ exports.updatePost = async (req, res) => {
     for (let img of images) {
       const path = img.path;
       const upload = await cloudinary.v2.uploader.upload(path);
-      // fs.unlinkSync(path);
+      fs.unlinkSync(path);
       publicId.push(upload.public_id);
       imageArr.push(upload.secure_url);
     }
