@@ -9,7 +9,6 @@ const { sendVerificationToken } = require("./../helper/mail");
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
   try {
     const user = await User.findOne({ $or: [{ email }, { username: email }] });
     if (!user) return res.status(401).send({ err: "Invalid credentials" });
@@ -141,6 +140,11 @@ exports.resendVerificationToken = async (req, res) => {
       return res
         .status(400)
         .send({ err: "Your account has already been activated" });
+
+    const tokenExists = await Token.findOne({ user: user._id });
+    if (tokenExists) {
+      await Token.findOneAndDelete({ user: user._id });
+    }
     const token = generateVerificationToken(4);
     await sendVerificationToken({
       to: user.email,
