@@ -12,13 +12,13 @@ const PostSchema = new mongoose.Schema(
       trim: true,
     },
 
-    content: {
+    description: {
       type: String,
       allowNull: false,
       trim: true,
     },
 
-    description: {
+    content: {
       type: String,
       allowNull: false,
       trim: true,

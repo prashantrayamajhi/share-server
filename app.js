@@ -8,10 +8,12 @@ passport(require("passport"));
 // routes
 const AuthRoute = require("./routes/auth.route");
 const PostRoute = require("./routes/posts.route");
+const CategoryRoute = require("./routes/category.route");
 
 // user routes
 const UserPostRoute = require("./routes/users/post.route");
 const UserProfileRoute = require("./routes/users/profile.route");
+const AdminCategoryRoute = require("./routes/admin/category.route");
 
 // investor routes
 
@@ -23,9 +25,13 @@ app.use(express.json());
 // router middlewares
 app.use("/api/v1/auth", AuthRoute);
 app.use("/api/v1/posts", PostRoute);
+app.use("/api/v1/category", CategoryRoute);
 
 // user routes
 app.use("/api/v1/user/posts", UserPostRoute);
 app.use("/api/v1/user/profile", UserProfileRoute);
+
+// admin routes
+app.use("/api/v1/admin/category", AdminCategoryRoute);
 
 module.exports = app;
