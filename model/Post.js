@@ -40,6 +40,13 @@ const PostSchema = new mongoose.Schema(
       default: false,
     },
 
+    categories: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Category",
+      },
+    ],
+
     images: [],
 
     publicId: [],

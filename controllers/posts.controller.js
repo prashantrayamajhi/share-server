@@ -45,7 +45,7 @@ exports.getPostById = async (req, res) => {
 exports.createPost = async (req, res) => {
   try {
     cloudinaryConfig();
-    let { title, content, private, description } = req.body;
+    let { title, content, private, description, categories } = req.body;
     if (!title || title.trim().length <= 0) {
       return res.status(400).send({ err: "Title cannot be empty" });
     }
@@ -55,6 +55,9 @@ exports.createPost = async (req, res) => {
     if (!content || content.trim().length <= 0) {
       return res.status(400).send({ err: "Content cannot be empty" });
     }
+
+    if (categories.length <= 0)
+      return res.status(400).send({ err: "Select at least one category" });
 
     if (!req.files || req.files.length <= 0) {
       return res.status(400).json({ err: "Missing Images" });
@@ -83,6 +86,7 @@ exports.createPost = async (req, res) => {
       description,
       private,
       user: req.user._id,
+      categories,
       images: imageArr,
       publicId,
     });
@@ -100,15 +104,33 @@ exports.updatePost = async (req, res) => {
   const publicId = [];
   const imageArr = [];
   const images = [];
-  let { title, content, private, description, image } = req.body;
+  let { title, content, private, description, image, categories } = req.body;
+
+  if (!title || title.trim().length <= 0) {
+    return res.status(400).send({ err: "Title cannot be empty" });
+  }
+  if (!description || description.trim().length <= 0) {
+    return res.status(400).send({ err: "Description cannot be empty" });
+  }
+  if (!content || content.trim().length <= 0) {
+    return res.status(400).send({ err: "Content cannot be empty" });
+  }
+
+  if (categories.length <= 0)
+    return res.status(400).send({ err: "Select at least one category" });
+
   if (!req.files && image) {
     return res.status(400).json({ err: "Missing Images" });
   }
+  if (categories.length <= 0)
+    return res.status(400).send({ err: "Select at least one category" });
+
   if (req.files.length > 0) {
     const imgKeys = Object.keys(req.files);
     imgKeys.forEach((key) => {
       images.push(req.files[key]);
     });
+
     for (let img of images) {
       const path = img.path;
       const upload = await cloudinary.v2.uploader.upload(path);
@@ -145,6 +167,8 @@ exports.updatePost = async (req, res) => {
     } else {
       post.images = images;
     }
+
+    if (categories) post.categories = categories;
 
     const data = await post.save();
     return res.status(200).json({ data });
