@@ -1,6 +1,7 @@
 const Category = require("./../../model/Category");
 const cloudinaryConfig = require("./../../helper/cloudinary");
 const cloudinary = require("cloudinary");
+const fs = require("fs");
 
 exports.postCategory = async (req, res) => {
   cloudinaryConfig();
@@ -16,10 +17,11 @@ exports.postCategory = async (req, res) => {
       return res.status(400).send({ err: "Category already exists" });
 
     const result = await cloudinary.v2.uploader.upload(image.path);
+    fs.unlinkSync(image.path);
     const category = new Category({
       name,
       image: result.secure_url,
-      publicId: result.public_id,
+      publicKey: result.public_id,
     });
     await category.save();
     return res.status(201).json({ category });
@@ -44,13 +46,14 @@ exports.updateCategory = async (req, res) => {
 
     let result;
     if (req.file) {
-      await cloudinary.v2.uploader.destroy(category.publicId);
+      await cloudinary.v2.uploader.destroy(category.publicKey);
       result = await cloudinary.v2.uploader.upload(image.path);
+      fs.unlinkSync(req.file.path);
     }
 
     category.name = name;
     category.image = result ? result.secure_url : category.image;
-    category.publicId = result ? result.public_id : category.publicId;
+    category.publicKey = result ? result.public_id : category.publicKey;
     const data = await category.save();
     return res.status(200).json({ data });
   } catch (err) {
@@ -66,7 +69,7 @@ exports.deleteCategory = async (req, res) => {
     const category = await Category.findById(req.params.id);
     if (!category) return res.status(404).send({ err: "Category not found" });
 
-    await cloudinary.v2.uploader.destroy(category.publicId);
+    await cloudinary.v2.uploader.destroy(category.publicKey);
     await category.remove();
     return res.status(200).send({ msg: "Category deleted" });
   } catch (err) {

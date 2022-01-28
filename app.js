@@ -25,13 +25,13 @@ app.use(express.json());
 // router middlewares
 app.use("/api/v1/auth", AuthRoute);
 app.use("/api/v1/posts", PostRoute);
-app.use("/api/v1/category", CategoryRoute);
+app.use("/api/v1/categories", CategoryRoute);
 
 // user routes
 app.use("/api/v1/user/posts", UserPostRoute);
 app.use("/api/v1/user/profile", UserProfileRoute);
 
 // admin routes
-app.use("/api/v1/admin/category", AdminCategoryRoute);
+app.use("/api/v1/admin/categories", AdminCategoryRoute);
 
 module.exports = app;
