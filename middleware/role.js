@@ -1,12 +1,12 @@
 exports.isAdmin = function (req, res, next) {
-  if (req.user.role === "admin") {
+  if (req.user.userType === "admin") {
     return next();
   }
   res.status(403).send("Access denied.");
 };
 
 exports.isModerator = function (req, res, next) {
-  if (req.user.role === "admin" || req.user.role === "moderator") {
+  if (req.user.userType === "admin" || req.user.userType === "moderator") {
     return next();
   }
   res.status(403).send("Access denied.");
@@ -14,9 +14,9 @@ exports.isModerator = function (req, res, next) {
 
 exports.isInvestor = function (req, res, next) {
   if (
-    req.user.role === "admin" ||
-    req.user.role === "moderator" ||
-    req.user.role === "investor"
+    req.user.userType === "admin" ||
+    req.user.userType === "moderator" ||
+    req.user.userType === "investor"
   ) {
     return next();
   }
