@@ -43,6 +43,14 @@ const UserSchema = new mongoose.Schema(
       trim: true,
     },
 
+    // relate to posts
+    posts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
+
     website: {
       type: String,
       trim: true,

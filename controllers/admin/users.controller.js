@@ -1,5 +1,6 @@
 const Users = require("./../../model/User");
 const bcrypt = require("bcrypt");
+const Post = require("../../model/Post");
 
 // ger users
 exports.getUsers = async (req, res) => {
@@ -122,17 +123,10 @@ exports.banUser = async (req, res) => {
 // delete user
 exports.deleteUser = async (req, res) => {
   try {
-    // await Users.findByIdAndDelete(req.params.id);
-    // res.status(200).json({
-    //   message: "User deleted",
-    // });
     const user = await Users.findById(req.params.id);
     if (!user) return res.status(404).send({ err: "User not found" });
     // delete all the posts by the user
-    await user.posts.forEach(async (post) => {
-      await post.remove();
-    });
-
+    await Post.deleteMany({ user: user._id });
     await user.remove();
     return res.status(200).send({ msg: "User deleted" });
     // // delete all the comments by the user
