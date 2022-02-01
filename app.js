@@ -13,7 +13,10 @@ const CategoryRoute = require("./routes/category.route");
 // user routes
 const UserPostRoute = require("./routes/users/post.route");
 const UserProfileRoute = require("./routes/users/profile.route");
+
+// admin routes
 const AdminCategoryRoute = require("./routes/admin/category.route");
+const AdminUserRoute = require("./routes/admin/user.route");
 
 // investor routes
 
@@ -33,5 +36,6 @@ app.use("/api/v1/user/profile", UserProfileRoute);
 
 // admin routes
 app.use("/api/v1/admin/categories", AdminCategoryRoute);
+app.use("/api/v1/admin/users", AdminUserRoute);
 
 module.exports = app;
