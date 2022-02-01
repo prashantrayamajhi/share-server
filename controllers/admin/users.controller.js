@@ -10,10 +10,7 @@ exports.getUsers = async (req, res) => {
       data: users,
     });
   } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
+    return res.status(500).send({ err });
   }
 };
 
@@ -21,15 +18,13 @@ exports.getUsers = async (req, res) => {
 exports.getUserById = async (req, res) => {
   try {
     const user = await Users.findById(req.params.id);
+    if (!user) return res.status(404).send({ err: "User not found" });
     res.status(200).json({
       status: "success",
       data: user,
     });
   } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
+    return res.status(500).send({ err });
   }
 };
 
@@ -37,6 +32,7 @@ exports.getUserById = async (req, res) => {
 exports.verifyUser = async (req, res) => {
   try {
     const user = await Users.findById(req.params.id);
+    if (!user) return res.status(404).send({ err: "User not found" });
     user.isVerified = true;
     await user.save();
     res.status(200).json({
@@ -44,10 +40,7 @@ exports.verifyUser = async (req, res) => {
       data: user,
     });
   } catch (err) {
-    res.status(404).json({
-      status: "fail",
-      message: err,
-    });
+    return res.status(500).send({ err });
   }
 };
 
@@ -55,6 +48,12 @@ exports.verifyUser = async (req, res) => {
 exports.createUser = async (req, res) => {
   try {
     const { username, password, email, role } = req.body;
+    // check if username or email exists
+    const userExists = await Users.findOne({ username });
+    if (userExists)
+      return res.status(400).send({ err: "Username already exists" });
+    const userEmail = await Users.findOne({ email });
+    if (userEmail) return res.status(400).send({ err: "Email already exists" });
     const user = await Users.create({
       username,
       password,
@@ -123,10 +122,44 @@ exports.banUser = async (req, res) => {
 // delete user
 exports.deleteUser = async (req, res) => {
   try {
-    await Users.findByIdAndDelete(req.params.id);
-    res.status(200).json({
-      message: "User deleted",
+    // await Users.findByIdAndDelete(req.params.id);
+    // res.status(200).json({
+    //   message: "User deleted",
+    // });
+    const user = await Users.findById(req.params.id);
+    if (!user) return res.status(404).send({ err: "User not found" });
+    // delete all the posts by the user
+    await user.posts.forEach(async (post) => {
+      await post.remove();
     });
+
+    await user.remove();
+    return res.status(200).send({ msg: "User deleted" });
+    // // delete all the comments by the user
+    // await user.comments.forEach(async (comment) => {
+    //     await comment.remove();
+    //     }
+    // )
+    // // delete all the likes by the user
+    // await user.likes.forEach(async (like) => {
+    //     await like.remove();
+    //     }
+    // )
+    // // delete all the dislikes by the user
+    // await user.dislikes.forEach(async (dislike) => {
+    //     await dislike.remove();
+    //     }
+    // )
+    // // delete all the notifications by the user
+    // await user.notifications.forEach(async (notification) => {
+    //     await notification.remove();
+    //     }
+    // )
+    // // delete all the messages by the user
+    // await user.messages.forEach(async (message) => {
+    //     await message.remove();
+    //     }
+    // )
   } catch (error) {
     res.status(500).json({
       message: "Error deleting user",
