@@ -20,10 +20,11 @@ exports.getUserById = async (req, res) => {
   try {
     const user = await Users.findById(req.params.id);
     if (!user) return res.status(404).send({ err: "User not found" });
-    res.status(200).json({
-      status: "success",
-      data: user,
-    });
+    // res.status(200).json({
+    //   status: "success",
+    //   data: user,
+    // });
+    return res.status(200).json({ data: user });
   } catch (err) {
     return res.status(500).send({ err });
   }
@@ -65,10 +66,10 @@ exports.createUser = async (req, res) => {
       message: "User created",
       user,
     });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
-      message: "Error creating user",
-      error,
+      message: "err creating user",
+      err,
     });
   }
 };
@@ -76,26 +77,52 @@ exports.createUser = async (req, res) => {
 // update user
 exports.updateUser = async (req, res) => {
   try {
-    const { name, address, email, role } = req.body;
-    const user = await Users.findByIdAndUpdate(
-      req.params.id,
-      {
-        name,
-        email,
-        address,
-        role,
-      },
-      { new: true }
-    );
+    let { name, address, role, userType, isVerified, isActivated, isBanned } =
+      req.body;
+
+    name = name.trim();
+    address = address.trim();
+    role = role.trim();
+    userType = userType.trim();
+
+    if (!name || name.trim().length === 0) {
+      return res.status(400).send({ err: "Name is required" });
+    }
+
+    if (!address || address.trim().length === 0) {
+      return res.status(400).send({ err: "Address is required" });
+    }
+
+    if (!role || role.trim().length === 0) {
+      return res.status(400).send({ err: "Role is required" });
+    }
+
+    if (!userType || userType.trim().length === 0) {
+      return res.status(400).send({ err: "User type is required" });
+    }
+
+    const user = await Users.findById(req.params.id);
+    if (!user) return res.status(404).send({ err: "User not found" });
+
+    isVerified = isVerified == "true" ? true : false;
+    isActivated = isActivated == "true" ? true : false;
+    isBanned = isBanned == "true" ? true : false;
+
+    if (name) user.name = name;
+    if (address) user.address = address;
+    if (role) user.role = role;
+    if (userType) user.userType = userType;
+    if (isVerified) user.isVerified = isVerified;
+    if (isActivated) user.isActivated = isActivated;
+    if (isBanned) user.isBanned = isBanned;
+
+    await user.save();
     res.status(200).json({
       message: "User updated",
       user,
     });
-  } catch (error) {
-    res.status(500).json({
-      message: "Error updating user",
-      error,
-    });
+  } catch (err) {
+    return res.status(500).send({ err });
   }
 };
 
@@ -113,10 +140,10 @@ exports.banUser = async (req, res) => {
       message: "User banned",
       user,
     });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
-      message: "Error banning user",
-      error,
+      message: "err banning user",
+      err,
     });
   }
 };
@@ -155,10 +182,10 @@ exports.deleteUser = async (req, res) => {
     //     await message.remove();
     //     }
     // )
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
-      message: "Error deleting user",
-      error,
+      message: "err deleting user",
+      err,
     });
   }
 };
