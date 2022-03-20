@@ -79,7 +79,30 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    facebook: {
+      type: String,
+      trim: true,
+    },
+    instagram: {
+      type: String,
+      trim: true,
+    },
+
+    linkedin: {
+      type: String,
+      trim: true,
+    },
+
+    image: {
+      type: String,
+      trim: true,
+    },
+    publicId: {
+      type: String,
+      trim: true,
+    },
   },
+
   {
     timestamps: true,
   }

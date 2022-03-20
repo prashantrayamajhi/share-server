@@ -50,6 +50,11 @@ const PostSchema = new mongoose.Schema(
     images: [],
 
     publicId: [],
+
+    postType: {
+      type: String,
+      default: "startup",
+    },
   },
   {
     timestamps: true,

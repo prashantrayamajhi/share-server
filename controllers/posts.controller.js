@@ -45,7 +45,8 @@ exports.getPostById = async (req, res) => {
 exports.createPost = async (req, res) => {
   try {
     cloudinaryConfig();
-    let { title, content, private, description, categories } = req.body;
+    let { title, content, private, description, categories, postType } =
+      req.body;
     if (!title || title.trim().length <= 0) {
       return res.status(400).send({ err: "Title cannot be empty" });
     }
@@ -56,8 +57,12 @@ exports.createPost = async (req, res) => {
       return res.status(400).send({ err: "Content cannot be empty" });
     }
 
-    if (categories.length <= 0)
-      return res.status(400).send({ err: "Select at least one category" });
+    if (!postType || postType.trim().length <= 0) {
+      return res.status(400).send({ err: "Select a Post Type" });
+    }
+
+    // if (categories.length <= 0)
+    //   return res.status(400).send({ err: "Select at least one category" });
 
     if (!req.files || req.files.length <= 0) {
       return res.status(400).json({ err: "Missing Images" });
@@ -86,9 +91,10 @@ exports.createPost = async (req, res) => {
       description,
       private,
       user: req.user._id,
-      categories,
+      // categories,
       images: imageArr,
       publicId,
+      postType,
     });
     const data = await post.save();
     return res.status(201).json({ data });
@@ -104,10 +110,15 @@ exports.updatePost = async (req, res) => {
   const publicId = [];
   const imageArr = [];
   const images = [];
-  let { title, content, private, description, image, categories } = req.body;
+  let { title, content, private, description, image, categories, postType } =
+    req.body;
 
   if (!title || title.trim().length <= 0) {
     return res.status(400).send({ err: "Title cannot be empty" });
+  }
+
+  if (!postType || postType.trim().length <= 0) {
+    return res.status(400).send({ err: "Select a post type" });
   }
   if (!description || description.trim().length <= 0) {
     return res.status(400).send({ err: "Description cannot be empty" });
@@ -116,8 +127,8 @@ exports.updatePost = async (req, res) => {
     return res.status(400).send({ err: "Content cannot be empty" });
   }
 
-  if (categories.length <= 0)
-    return res.status(400).send({ err: "Select at least one category" });
+  // if (categories.length <= 0)
+  //   return res.status(400).send({ err: "Select at least one category" });
 
   if (!req.files && image) {
     return res.status(400).json({ err: "Missing Images" });
@@ -161,6 +172,7 @@ exports.updatePost = async (req, res) => {
     if (content) post.content = content;
     if (private) post.private = private;
     if (description) post.description = description;
+    if (postType) post.postType = postType;
     if (req.files.length > 0) {
       post.images = imageArr;
       post.publicId = publicId;
@@ -168,7 +180,7 @@ exports.updatePost = async (req, res) => {
       post.images = images;
     }
 
-    if (categories) post.categories = categories;
+    // if (categories) post.categories = categories;
 
     const data = await post.save();
     return res.status(200).json({ data });
