@@ -86,6 +86,7 @@ exports.updateProfile = async (req, res) => {
 exports.updateProfileImage = async (req, res) => {
   cloudinaryConfig();
   const { id } = req.user;
+  if (!req.file) return res.status(400).send({ err: "No file selected" });
   try {
     const user = await User.findById(id);
     if (!user) {
