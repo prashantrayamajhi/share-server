@@ -105,6 +105,26 @@ exports.updateProfileImage = async (req, res) => {
   }
 };
 
+// update verification settings
+exports.updateVerificationDetails = async (req, res) => {
+  const { organization, pan } = req.body;
+
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ msg: "User not found" });
+    if (!organization || !organization.trim() || !pan || !pan.trim()) {
+      user.isVerified = false;
+    }
+    user.organizationName = organization;
+    user.pan = pan;
+    await user.save();
+    return res.status(200).json({ data: user });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ err });
+  }
+};
+
 // delete a user account and all the posts
 exports.deleteProfileAndPosts = async (req, res) => {
   try {

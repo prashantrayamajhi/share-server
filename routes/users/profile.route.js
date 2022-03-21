@@ -17,6 +17,12 @@ router.patch(
 );
 
 router.patch(
+  "/verification",
+  passport.authenticate("jwt", { session: false }),
+  profileController.updateVerificationDetails
+);
+
+router.patch(
   "/password",
   passport.authenticate("jwt", { session: false }),
   profileController.updatePassword
