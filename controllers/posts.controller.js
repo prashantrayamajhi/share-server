@@ -6,9 +6,12 @@ const fs = require("fs");
 // get all the posts
 exports.getAllPosts = async (req, res) => {
   try {
-    const data = await Post.find().populate("user", "name").sort({
-      createdAt: -1,
-    });
+    const data = await Post.find()
+      .populate("user", "name")
+      .sort({
+        createdAt: -1,
+      })
+      .limit(req.query.limit ? req.query.limit : 10);
     return res.status(200).json({ data });
   } catch (err) {
     console.log(err);
@@ -19,16 +22,9 @@ exports.getAllPosts = async (req, res) => {
 // get non-private posts
 exports.getPosts = async (req, res) => {
   try {
-    const data = await Post.find({ private: false }).populate(
-      "user",
-      "-password",
-      "-publicId",
-      "-organizationName",
-      "-isBanned",
-      "-isActivated",
-      "-email",
-      "-pan"
-    );
+    const data = await Post.find({ private: false })
+      .populate("user", "-password")
+      .limit(req.query.limit ? +req.query.limit : 10);
     return res.status(200).json({ data });
   } catch (err) {
     console.log(err);
