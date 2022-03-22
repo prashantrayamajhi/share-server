@@ -10,6 +10,7 @@ const AuthRoute = require("./routes/auth.route");
 const PostRoute = require("./routes/posts.route");
 const CategoryRoute = require("./routes/category.route");
 const PartnerRoute = require("./routes/partner.route");
+const UserRoute = require("./routes/user.route");
 
 // user routes
 const UserPostRoute = require("./routes/users/post.route");
@@ -28,6 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // router middlewares
+app.use("/api/v1/users", UserRoute);
 app.use("/api/v1/auth", AuthRoute);
 app.use("/api/v1/posts", PostRoute);
 app.use("/api/v1/categories", CategoryRoute);
