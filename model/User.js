@@ -101,6 +101,11 @@ const UserSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+
+    map: {
+      type: String,
+      trim: true,
+    },
   },
 
   {

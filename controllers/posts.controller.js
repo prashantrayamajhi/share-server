@@ -19,7 +19,16 @@ exports.getAllPosts = async (req, res) => {
 // get non-private posts
 exports.getPosts = async (req, res) => {
   try {
-    const data = await Post.find({ private: false }).populate("user", "name");
+    const data = await Post.find({ private: false }).populate(
+      "user",
+      "-password",
+      "-publicId",
+      "-organizationName",
+      "-isBanned",
+      "-isActivated",
+      "-email",
+      "-pan"
+    );
     return res.status(200).json({ data });
   } catch (err) {
     console.log(err);
@@ -34,7 +43,7 @@ exports.getPostById = async (req, res) => {
     if (!post) {
       return res.status(404).send({ err: "Post not found" });
     }
-    const data = await Post.findById(id).populate("user", "name");
+    const data = await Post.findById(id).populate("user", "-password");
     return res.status(200).json({ data });
   } catch (err) {
     console.log(err);

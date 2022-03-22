@@ -20,7 +20,7 @@ exports.getProfile = async (req, res) => {
 // update general settings
 exports.updateGeneral = async (req, res) => {
   const { id } = req.user;
-  const { name, address } = req.body;
+  const { name, address, map } = req.body;
   if (!name || !name.trim()) {
     return res.status(400).send({ err: "Name is required" });
   }
@@ -32,6 +32,7 @@ exports.updateGeneral = async (req, res) => {
     if (!user) return res.status(404).send({ err: "User not found" });
     user.name = name;
     user.address = address;
+    user.map = map;
     await user.save();
     return res.status(200).json({ data: user });
   } catch (err) {
