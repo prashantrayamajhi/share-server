@@ -16,3 +16,14 @@ exports.getInvestors = async (req, res) => {
     console.log(err);
   }
 };
+
+exports.getUserById = async (req, res) => {
+  try {
+    const data = await User.findById(req.params.id).select("-password");
+    if (!data) return res.status(404).send({ err: "User not found" });
+    return res.status(200).json({ data });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ err });
+  }
+};

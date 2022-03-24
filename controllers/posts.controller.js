@@ -23,6 +23,9 @@ exports.getAllPosts = async (req, res) => {
 exports.getPosts = async (req, res) => {
   try {
     const data = await Post.find({ private: false })
+      .sort({
+        createdAt: -1,
+      })
       .populate("user", "-password")
       .limit(req.query.limit ? +req.query.limit : 10);
     return res.status(200).json({ data });
