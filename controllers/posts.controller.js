@@ -35,6 +35,21 @@ exports.getPosts = async (req, res) => {
   }
 };
 
+exports.getPostsByUserId = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const data = await Post.find({ user: id })
+      .populate("user", "-password")
+      .sort({
+        createdAt: -1,
+      });
+    return res.status(200).json({ data });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ err });
+  }
+};
+
 exports.getPostById = async (req, res) => {
   const { id } = req.params;
   try {

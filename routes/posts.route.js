@@ -8,6 +8,8 @@ router.get("/", controller.getPosts);
 
 router.get("/:id", controller.getPostById);
 
+router.get("/user/:id", controller.getPostsByUserId);
+
 router.get(
   "/allPosts",
   passport.authenticate("jwt", {
