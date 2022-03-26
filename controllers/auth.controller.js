@@ -37,7 +37,7 @@ exports.login = async (req, res) => {
 
 exports.signup = async (req, res) => {
   try {
-    const {
+    let {
       email,
       name,
       address,
@@ -49,6 +49,12 @@ exports.signup = async (req, res) => {
       companySetor,
       pan,
     } = req.body;
+
+    if (userType === true) {
+      userType = "investor";
+    } else {
+      userType = "startup";
+    }
 
     if (!email) {
       return res.status(400).send({ err: "Email cannot be empty" });
