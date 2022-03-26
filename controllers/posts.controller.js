@@ -133,8 +133,7 @@ exports.updatePost = async (req, res) => {
   const publicId = [];
   const imageArr = [];
   const images = [];
-  let { title, content, private, description, image, categories, postType } =
-    req.body;
+  let { title, content, private, description, image, postType } = req.body;
 
   if (!title || title.trim().length <= 0) {
     return res.status(400).send({ err: "Title cannot be empty" });
@@ -156,8 +155,6 @@ exports.updatePost = async (req, res) => {
   if (!req.files && image) {
     return res.status(400).json({ err: "Missing Images" });
   }
-  if (categories.length <= 0)
-    return res.status(400).send({ err: "Select at least one category" });
 
   if (req.files.length > 0) {
     const imgKeys = Object.keys(req.files);

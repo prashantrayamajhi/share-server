@@ -27,9 +27,9 @@ router.post(
 );
 
 router.patch(
-  "/",
+  "/:id",
   passport.authenticate("jwt", { session: false }),
-  upload.array("image"),
+  upload.array("images"),
   controller.updatePost
 );
 
