@@ -20,6 +20,7 @@ const UserProfileRoute = require("./routes/users/profile.route");
 const AdminCategoryRoute = require("./routes/admin/category.route");
 const AdminUserRoute = require("./routes/admin/user.route");
 const AdminPartnerRoute = require("./routes/admin/partner.route");
+const AdminPostsRoute = require("./routes/admin/posts.route");
 
 // investor routes
 
@@ -43,5 +44,6 @@ app.use("/api/v1/user/profile", UserProfileRoute);
 app.use("/api/v1/admin/categories", AdminCategoryRoute);
 app.use("/api/v1/admin/users", AdminUserRoute);
 app.use("/api/v1/admin/partners", AdminPartnerRoute);
+app.use("/api/v1/admin/posts", AdminPostsRoute);
 
 module.exports = app;
