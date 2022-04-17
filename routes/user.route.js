@@ -5,4 +5,6 @@ router.get("/investors", controller.getInvestors);
 
 router.get("/:id", controller.getUserById);
 
+router.post("/contact", controller.contact);
+
 module.exports = router;
