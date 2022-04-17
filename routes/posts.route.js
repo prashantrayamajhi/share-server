@@ -41,7 +41,7 @@ router.delete(
 
 router.post(
   "/pitch/:id",
-  passport.authenticate("jwt", { session: false }),
+  // passport.authenticate("jwt", { session: false }),
   controller.sendMailToInvestor
 );
 

@@ -227,11 +227,20 @@ exports.deletePost = async (req, res) => {
 };
 
 exports.sendMailToInvestor = async (req, res) => {
-  const { investmentOffered, name, email, phoneNumber } = req.body;
+  console.log("inside pitch")
+  const { name, email, phoneNumber, address, investmentOffered } = req.body;
   try {
     const body = `
     A potential investor, Mr. ${name} has sent an investment request via Aavasar on your startup post.
     The initial investment offer is : ${investmentOffered}. Click this link to connect with the investor. Click Here
+    
+    <b>
+    <h3> Information about Investor </h3>
+    <hr />
+    <h4> Name: ${name} <br /> Email: ${email} <br /> Phone: ${phoneNumber} <br /> Address: ${address} <br /> Offered Investment: Rs. ${investmentOffered} <br />
+    </h4>
+    </b>
+    
     `;
     await sendEmail(email, "Investment Offer", body);
     return res.status(200).send({ msg: "Mail sent successfully" });
