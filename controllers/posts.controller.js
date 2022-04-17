@@ -2,6 +2,7 @@ const Post = require("./../model/Post");
 const cloudinaryConfig = require("./../helper/cloudinary");
 const cloudinary = require("cloudinary");
 const fs = require("fs");
+const { sendEmail } = require("./../helper/mail");
 
 // get all the posts
 exports.getAllPosts = async (req, res) => {
@@ -219,6 +220,21 @@ exports.deletePost = async (req, res) => {
     if (!post) return res.status(404).send({ err: "Post not found" });
     const data = await post.remove();
     return res.status(200).json({ data });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ err });
+  }
+};
+
+exports.sendMailToInvestor = async (req, res) => {
+  const { investmentOffered, name, email, phoneNumber } = req.body;
+  try {
+    const body = `
+    A potential investor, Mr. ${name} has sent an investment request via Aavasar on your startup post.
+    The initial investment offer is : ${investmentOffered}. Click this link to connect with the investor. Click Here
+    `;
+    await sendEmail(email, "Investment Offer", body);
+    return res.status(200).send({ msg: "Mail sent successfully" });
   } catch (err) {
     console.log(err);
     return res.status(500).send({ err });

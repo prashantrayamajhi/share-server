@@ -39,4 +39,10 @@ router.delete(
   controller.deletePost
 );
 
+router.post(
+  "/pitch/:id",
+  passport.authenticate("jwt", { session: false }),
+  controller.sendMailToInvestor
+);
+
 module.exports = router;
