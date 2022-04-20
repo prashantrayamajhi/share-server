@@ -227,7 +227,6 @@ exports.deletePost = async (req, res) => {
 };
 
 exports.sendMailToInvestor = async (req, res) => {
-  console.log("inside pitch")
   const { name, email, phoneNumber, address, investmentOffered } = req.body;
   try {
     const body = `
@@ -243,6 +242,31 @@ exports.sendMailToInvestor = async (req, res) => {
     
     `;
     await sendEmail(email, "Investment Offer", body);
+    return res.status(200).send({ msg: "Mail sent successfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send({ err });
+  }
+};
+
+exports.pitchInvestor = async (req, res) => {
+  try {
+    const {
+      name,
+      email,
+      businessType,
+      category,
+      pitchTitle,
+      summary,
+      businessName,
+    } = req.body;
+    const body = `
+    <h1>${name} - ${pitchTitle}</h1>  </br>
+    A potential startup pitch has requested via Aavasar. ${businessName} is a ${businessType}, categorized under ${category}.
+    </br>
+    ${summary}
+      `;
+    await sendEmail(email, "Startup Pitch", body);
     return res.status(200).send({ msg: "Mail sent successfully" });
   } catch (err) {
     console.log(err);

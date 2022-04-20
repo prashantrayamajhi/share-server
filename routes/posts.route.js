@@ -45,4 +45,10 @@ router.post(
   controller.sendMailToInvestor
 );
 
+router.post(
+  "/startup/pitch/",
+  passport.authenticate("jwt", { session: false }),
+  controller.pitchInvestor
+);
+
 module.exports = router;
