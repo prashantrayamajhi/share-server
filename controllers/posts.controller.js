@@ -232,7 +232,7 @@ exports.sendMailToInvestor = async (req, res) => {
   try {
     const body = `
     A potential investor, Mr. ${name} has sent an investment request via Aavasar on your startup post.
-    The initial investment offer is : ${investmentOffered}. Click this link to connect with the investor. Click Here
+    The initial investment offer is : ${investmentOffered}.
     
     <b>
     <h3> Information about Investor </h3>
