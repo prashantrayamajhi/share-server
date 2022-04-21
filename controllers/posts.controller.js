@@ -227,7 +227,8 @@ exports.deletePost = async (req, res) => {
 };
 
 exports.sendMailToInvestor = async (req, res) => {
-  const { name, email, phoneNumber, address, investmentOffered } = req.body;
+  const { name, email, phoneNumber, address, investmentOffered, startupEmail } =
+    req.body;
   try {
     const body = `
     A potential investor, Mr. ${name} has sent an investment request via Aavasar on your startup post.
@@ -241,7 +242,7 @@ exports.sendMailToInvestor = async (req, res) => {
     </b>
     
     `;
-    await sendEmail(email, "Investment Offer", body);
+    await sendEmail(startupEmail, "Investment Offer", body);
     return res.status(200).send({ msg: "Mail sent successfully" });
   } catch (err) {
     console.log(err);
