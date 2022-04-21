@@ -254,6 +254,7 @@ exports.pitchInvestor = async (req, res) => {
     const {
       name,
       email,
+      investorEmail,
       businessType,
       category,
       pitchTitle,
@@ -262,11 +263,12 @@ exports.pitchInvestor = async (req, res) => {
     } = req.body;
     const body = `
     <h1>${name} - ${pitchTitle}</h1>  </br>
+    <h2>${email}</h2></br>
     A potential startup pitch has requested via Aavasar. ${businessName} is a ${businessType}, categorized under ${category}.
     </br>
     ${summary}
       `;
-    await sendEmail(email, "Startup Pitch", body);
+    await sendEmail(investorEmail, "Startup Pitch", body);
     return res.status(200).send({ msg: "Mail sent successfully" });
   } catch (err) {
     console.log(err);
