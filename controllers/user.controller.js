@@ -34,7 +34,7 @@ exports.contact = async (req, res) => {
 
   try {
     const body = `${message} phone number : ${number}`;
-    await sendEmail(process.env.MAIL_USER, name, body);
+    await sendEmail(process.env.MAIL_USERNAME, name, body);
     return res.status(200).send({ msg: "Message sent" });
   } catch (err) {
     console.log(err);
